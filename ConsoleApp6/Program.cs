@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -201,9 +201,8 @@ class Program
         Console.WriteLine("Изменение настроек:");
         Console.WriteLine("1. Изменить пароль");
         Console.WriteLine("2. Изменить дату рождения");
-        Console.WriteLine("3. Изменить имя пользователя");
 
-        int choice = GetChoice(1, 3);
+        int choice = GetChoice(1, 2);
 
         switch (choice)
         {
@@ -212,9 +211,6 @@ class Program
                 break;
             case 2:
                 ChangeDateOfBirth();
-                break;
-            case 3:
-                ChangeUsername();
                 break;
         }
 
@@ -242,20 +238,26 @@ class Program
         Console.WriteLine("Дата рождения изменена.");
     }
 
-    private static void ChangeUsername()
+    static bool IsPasswordStrong(string password)
     {
-        Console.Write("Введите новое имя пользователя: ");
-        string newUsername = Console.ReadLine()!;
+        if (password.Length < 8)
+            return false;
 
-        if (userRepository.IsUsernameTaken(newUsername))
+        bool hasUpperCase = false;
+        bool hasLowerCase = false;
+
+        foreach (char c in password)
         {
-            Console.WriteLine("Этот логин уже занят, попробуйте другой.");
+            if (char.IsUpper(c))
+                hasUpperCase = true;
+            else if (char.IsLower(c))
+                hasLowerCase = true;
         }
-        else
-        {
-            currentUser!.Username = newUsername;
-            Console.WriteLine("Имя пользователя изменено.");
-        }
+
+        if (!hasUpperCase || !hasLowerCase)
+            return false;
+
+        return true;
     }
 
 
@@ -292,8 +294,18 @@ class Program
             return;
         }
 
-        Console.Write("Введите пароль: ");
+        Console.Write("Введите пароль (P.s: он должен состоять из 8 символов, включая хотя бы одну заглавную и одну строчную букву): ");
         string password = Console.ReadLine()!;
+
+        while (!IsPasswordStrong(password!))
+        {
+            Console.WriteLine("Пароль не соответствует требованиям (должен состоять из 8 символов, включая хотя бы одну заглавную и одну строчную букву)");
+            Console.Write("Введите пароль еще раз: ");
+            password = Console.ReadLine()!;
+        }
+
+
+
         Console.Write("Введите дату рождения по формату (ГГГ-ММ-ДД): ");
         DateTime dateOfBirth;
         while (!DateTime.TryParse(Console.ReadLine(), out dateOfBirth))
