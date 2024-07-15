@@ -24,7 +24,6 @@ public class UserRepository
         LoadUsers();
         LoadResults();
         LoadQuizCategories();
-        EnsureFilesExist(); 
     }
 
     // работа с пользователем
@@ -223,31 +222,6 @@ public class UserRepository
             }
         }
     }
-
-    public void EnsureFilesExist() // для проверки есть ли у нас вообще этот файл
-    {
-        try
-        {
-            if (!File.Exists(QuestionsFilePath))
-            {
-                using (StreamWriter sw = File.CreateText(QuestionsFilePath))
-                {
-                }
-            }
-
-            if (!File.Exists(CategoriesFilePath))
-            {
-                using (StreamWriter sw = File.CreateText(CategoriesFilePath))
-                {
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка при создании файлов: {ex.Message}");
-        }
-    }
-
 
 
     public void SaveUsers()
