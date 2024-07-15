@@ -261,9 +261,12 @@ class Program
     }
 
 
-    private static void Login()
+ private static void Login()
+{
+    Console.Clear();
+
+    while (true)
     {
-        Console.Clear();
         Console.Write("Введите логин: ");
         string username = Console.ReadLine()!;
         Console.Write("Введите пароль: ");
@@ -273,26 +276,37 @@ class Program
 
         if (currentUser == null)
         {
-            Console.WriteLine("Неправильный логин или пароль.");
+            Console.WriteLine("Неправильный логин или пароль. Пожалуйста, попробуйте ещё раз.");
         }
         else
         {
             Console.WriteLine($"Добро пожаловать, {currentUser.Username}, рады вас приветствовать!");
+            break;
         }
-        Console.ReadLine();
     }
+    Console.ReadLine();
+}
 
-    private static void Register()
+  private static void Register()
+{
+    Console.Clear();
+
+    string username;
+    while (true)
     {
-        Console.Clear();
         Console.Write("Введите логин: ");
-        string username = Console.ReadLine()!;
+        username = Console.ReadLine()!;
 
         if (userRepository.IsUsernameTaken(username))
         {
             Console.WriteLine("Этот логин уже занят, попробуйте другой.");
-            return;
         }
+        else
+        {
+            break;
+        }
+    }
+
 
         Console.Write("Введите пароль (P.s: он должен состоять из 8 символов, включая хотя бы одну заглавную и одну строчную букву): ");
         string password = Console.ReadLine()!;
